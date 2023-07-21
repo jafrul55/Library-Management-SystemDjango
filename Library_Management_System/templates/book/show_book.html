@@ -1,0 +1,48 @@
+{% extends "Home/home.html" %}
+{% block title %}
+<title>Show Books</title>
+{% endblock title %}
+
+{% block content %}
+<h1 style="text-align: center;">Showing Books Info Below </h1>
+<div style="width: 100%;margin:auto; padding:50px">
+    <table class="table table-primary table-hover">
+        <thead>
+            <tr>
+                <th>ISNB</th>
+                <th>TITLE</th>
+                <th>AUTHOR</th>
+                <th>PUBLICATION_DATE</th>
+                <th>GENRE</th>
+                <th>AVAILABILITY</th>
+                <th>NUM_AVAILABLE</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for books in Show %}
+            <tr>
+                <td>{{ books.isbn }}</td>
+                <td>{{ books.title }}</td>
+                <td>{{ books.author }}</td>
+                <td>{{ books.publication_date }}</td>
+                <td>{{ books.genre }}</td>
+                <td>{{ books.availability }}</td>
+                <td>{{ books.num_available }}</td>
+                <td>
+                    <form action="{% url 'BOOKDETAIL' isbn=books.isbn %}" method="post">
+                        {% csrf_token %}
+                        {% if not book.is_borrowed %}
+                        <button type="submit" name="borrow">Borrow</button>
+                        <button type="submit" name="return">Return</button>
+                        {% endif %}
+                        <button type="submit" name="add_to_wishlist">Add to Wishlist</button>
+
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

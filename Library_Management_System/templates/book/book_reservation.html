@@ -1,0 +1,23 @@
+{% extends "Home/home.html" %}
+
+{% block title %}
+<title>Book Reservation</title>
+{% endblock title %}
+
+{% block content %}
+<h2>{{book.title}}</h2>
+<p>ISBN: {{book.isbn}}</p>
+<p>Author: {{book.author}}</p>
+<p>Publication Date: {{book.publication_date}}</p>
+<p>Genre: {{book.genre}}</p>
+<p>Availability: {% if book.availability %}Available{% else %}Not Available{% endif %}</p>
+<p>Number Available: {{book.num_available}}</p>
+
+{% if user.is_authenticated and book.availability %}
+<form method="post" action="{% url 'book_reservation' isbn=book.isbn %}">
+    {% csrf_token %}
+    <button type="submit">Reserve Book</button>
+</form>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends "Home/home.html" %}
+
+{% block content %}
+<h1>My Wishlist</h1>
+{% if wishlist_books %}
+<table class="table table-primary table-hover">
+    <thead>
+        <tr>
+            <th>ISBN</th>
+            <th>TITLE</th>
+            <th>AUTHOR</th>
+            <th>PUBLICATION_DATE</th>
+            <th>GENRE</th>
+            <th>AVAILABILITY</th>
+            <th>NUM_AVAILABLE</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for wishlist_book in wishlist_books %}
+        <tr>
+            <td>{{ wishlist_book.book.isbn }}</td>
+            <td>{{ wishlist_book.book.title }}</td>
+            <td>{{ wishlist_book.book.author }}</td>
+            <td>{{ wishlist_book.book.publication_date }}</td>
+            <td>{{ wishlist_book.book.genre }}</td>
+            <td>{{ wishlist_book.book.availability }}</td>
+            <td>{{ wishlist_book.book.num_available }}</td>
+            <td>
+                <form action="{% url 'WISHLIST' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="remove_from_wishlist" value="{{ wishlist_book.book.isbn }}">
+                    <button type="submit">Remove from Wishlist</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Your wishlist is empty.</p>
+{% endif %}
+
+{% endblock content %}

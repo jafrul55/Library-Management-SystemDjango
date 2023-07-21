@@ -1,0 +1,51 @@
+{% extends "Home/home.html" %}
+
+{% block title %}
+<title>Book Details</title>
+{% endblock title %}
+
+{% block content %}
+<h2>{{ book.title }}</h2>
+<p>Author: {{ book.author }}</p>
+<p>ISBN: {{ book.isbn }}</p>
+<p>Publication Date: {{ book.publication_date }}</p>
+<p>Genre: {{ book.genre }}</p>
+<p>Availability: {% if book.availability %}Available{% else %}Not Available{% endif %}</p>
+<p>Number Available: {{ book.num_available }}</p>
+
+{% if borrowed_books %}
+{% if borrowed_books.count > 0 %}
+<h3>Your Borrowed Book Information:</h3>
+<p>Due Date: {{ borrowed_books.0.due_date }}</p>
+{% if borrowed_books.0.returned %}
+<p>Book returned successfully.</p>
+{% else %}
+<form method="post" action="{% url 'BOOKDETAIL' book.isbn %}">
+    {% csrf_token %}
+    <button type="submit" name="return">Return Book</button>
+</form>
+{% endif %}
+{% endif %}
+
+{% if fine_amount %}
+<p>Fine Amount: ${{ fine_amount }}</p>
+{% endif %}
+{% else %}
+<p>This book is not currently borrowed.</p>
+{% endif %}
+
+{% if book.availability and not borrowed_books %}
+<form method="post" action="{% url 'BOOKDETAIL' book.isbn %}">
+    {% csrf_token %}
+    <button type="submit" name="borrow">Borrow Book</button>
+</form>
+{% endif %}
+
+{% if not Wishlist%}
+<form method="post" action="{% url 'WISHLIST'%}">
+    {% csrf_token %}
+    <button type="submit" name="add_to_wishlist">Add to Wishlist</button>
+</form>
+{% endif %}
+
+{% endblock content %}

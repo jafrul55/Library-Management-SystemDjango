@@ -1,0 +1,63 @@
+{% extends 'Home/home.html' %}
+
+{% block content %}
+<h1 style="text-align: center;">Book Search</h1>
+<!-- <form method="GET" action="{% url 'BOOKSEARCH' %}">
+    <input type="text" name="booksearch" placeholder="Search...">
+    <select name="search_criteria">
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="genre">Genre</option>
+        <option value="isbn">ISBN</option>
+    </select>
+    <input type="submit" value="search">
+</form> -->
+
+{% if books %}
+<h3>Search Results:</h3>
+<table class="table table-primary table-hover">
+    <thead>
+        <tr>
+            <th>ISNB</th>
+            <th>TITLE</th>
+            <th>AUTHOR</th>
+            <th>PUBLICATION_DATE</th>
+            <th>GENRE</th>
+            <th>AVAILABILITY</th>
+            <th>NUM_AVAILABLE</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{book.isbn}}</td>
+            <td>{{book.title}}</td>
+            <td>{{book.author}}</td>
+            <td>{{book.publication_date}}</td>
+            <td>{{book.genre}}</td>
+            <td>{{book.availability}}</td>
+            <td>{{book.num_available}}</td>
+        </tr>
+
+    </tbody>
+</table>
+{% if user.is_authenticated %}
+{% if book.isbn %}
+<form action="{% url 'BOOKDETAIL' isbn=book.isbn %}" method="post">
+    {% csrf_token %}
+    {% if not book.is_borrowed %}
+    <button type="submit" name="borrow">Borrow</button>
+    <button type="submit" name="return">Return</button>
+    {% endif %}
+    <button type="submit" name="add_to_wishlist">Add to Wishlist</button>
+</form>
+{% else %}
+<!-- Handle the case where isbn is missing or empty -->
+<p>ISBN not available</p>
+{% endif %}
+{% endif %}
+{% endfor %}
+{% else %}
+<p>No books found.</p>
+{% endif %}
+{% endblock %}

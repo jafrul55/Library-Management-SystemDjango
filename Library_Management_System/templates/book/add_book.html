@@ -1,0 +1,17 @@
+{% extends "Home/home.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Add Book Info</title>
+{% endblock title %}
+
+{% block content %}
+<h1 style="text-align: center;">Add Books</h1>
+<div style="width: 40%;margin:auto;">
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-primary">Add Book</button>
+    </form>
+</div>
+{% endblock content %}

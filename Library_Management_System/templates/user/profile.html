@@ -1,0 +1,16 @@
+{% extends "Home/home.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+<title>Profile</title>
+{% endblock title %}
+
+
+{% block content %}
+{% csrf_token %}
+<h1>Library Profile</h1>
+<h1>Hello,{{User.username}}</h1>
+<h2>This is your email address - {{User.email}}</h2>
+<h2>This is your first name - {{User.first_name}}</h2>
+<h2>This is your last name - {{User.last_name}}</h2>
+<a href="{% url 'LOGOUT'%}" style="text-decoration: none;" class="btn btn-danger" role="button">Logout</a>
+{% endblock content %}
